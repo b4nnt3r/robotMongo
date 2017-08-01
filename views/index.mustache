@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Robot Directory</title>
+  <link rel="stylesheet" href="style.css" / </head>
+
+  <body>
+    <div class="navBar">
+      <a href="/afh">Robots for Hire</a>
+      <a href="/employed">Employed Robots</a>
+    </div>
+    <div class="container">
+      {{ #robots }}
+      <div class="results">
+        <img src= {{ avatar }}>
+        <div class="details">
+          <span><p><a href="/{{ username }}">{{ name }}</a></p></span>
+          <p>{{ job }}{{ ^job }}
+            <h3>Available For Hire</h3> {{ /job }}
+          </p>
+          <p>{{ company }}</p>
+        </div>
+      </div>
+      {{ /robots }}
+
+    </div>
+  </body>
+
+</html>

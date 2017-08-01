@@ -1,0 +1,79 @@
+body {
+  text-transform: capitalize;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+}
+
+.results {
+  width: 1000px;
+  margin: 15px;
+  padding: 5px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: center;
+}
+
+.details {
+  text-align: center;
+}
+
+.contact {
+  text-align: left;
+}
+
+.afh {
+  color: red;
+  display: inline-flex;
+}
+
+.citywork {
+  display: inline-flex;
+
+}
+
+a {
+  text-decoration: none;
+}
+
+p {
+  margin: auto;
+  padding-left: 25px;
+}
+
+h1 {
+  color: #3F4E5C;
+  font-size: 2.5em;
+}
+
+h3 {
+  color: red;
+  padding-left: 10px;
+
+}
+
+img {
+  border: 1px solid lightgrey;
+  border-radius: 50%;
+}
+
+th {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+table {
+  display: flex;
+  justify-content: center;
+}
