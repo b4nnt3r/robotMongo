@@ -32,7 +32,13 @@ let findJobless = function(db, callback) {
 
 let findEmployed = function(db, callback) {
   let collection = db.collection('robots');
-  collection.find().toArray(function(err, result) {
+  collection.find({
+    "company": {
+      $not: {
+        $in: ['null']
+      }
+    }
+  }).toArray(function(err, result) {
     console.log("found", result.length, "robots");
     callback(result);
   });
