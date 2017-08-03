@@ -1,4 +1,5 @@
 const express = require('express');
+// const passport = require('passport');
 const mustacheExpress = require('mustache-express');
 let MongoClient = require('mongodb').MongoClient;
 let url = 'mongodb://127.0.0.1:27017/robotdb';
@@ -33,13 +34,13 @@ let findJobless = function(db, callback) {
 let findEmployed = function(db, callback) {
   let collection = db.collection('robots');
   collection.find({
-      "company": {
-        $ne: null
-      }
-    }).toArray(function(err, result) {
-  console.log("found", result.length, "robots");
-  callback(result);
-});
+    "company": {
+      $ne: null
+    }
+  }).toArray(function(err, result) {
+    console.log("found " + result.length + " robots");
+    callback(result);
+  });
 }
 
 app.get('/', function(request, response) {
@@ -67,6 +68,19 @@ app.get('/employed', function(request, response) {
     findEmployed(db, function(result) {
       response.render('index', {
         robots: result
+      });
+    });
+  });
+});
+
+app.get('/:id', function(req, res) {
+  MongoClient.connect(url, function(err, db) {
+    findAll(db, function(result) {
+      let robot = result.find(function(element) {
+        return element.username.toLowerCase() === req.params.id;
+      });
+      res.render("details", {
+        robots: robot
       });
     });
   });
