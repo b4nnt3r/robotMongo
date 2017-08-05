@@ -52,6 +52,25 @@ let findEmployed = function(callback) {
   });
 }
 
+let findOne = function(find, render) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      console.log(err);
+    } else {
+      const collection = db.collection('robots');
+      collection
+        .find(find)
+        .toArray(function(err, docs) {
+          docs.forEach(function(doc) {
+            doc.username.toLowerCase() === find.id;
+          })
+          render(docs);
+          db.close();
+        });
+    }
+  });
+}
+
 app.get('/', function(req, res) {
   findAll(function(result) {
     res.render('index', {
@@ -77,15 +96,29 @@ app.get('/employed', function(req, res) {
 });
 
 app.get('/:id', function(req, res) {
-  findAll(function(result) {
-    let robot = result.find(function(element) {
-      return element.username.toLowerCase() === req.params.id;
+  const id = parseInt(req.params.id);
+  const robotID = {
+    robots: id
+  }
+  const robotRender = function(docs) {
+    res.render('details', {
+      robots: docs,
+      id: id
     });
-    res.render("details", {
-      robots: robot
-    });
-  });
+  }
+  findOne(robotID, robotRender);
 });
+
+// app.get('/:id', function(req, res) {
+//   findAll(function(result) {
+//     let robot = result.find(function(element) {
+//       return element.username.toLowerCase() === req.params.id;
+//     });
+//     res.render("details", {
+//       robots: robot
+//     });
+//   });
+// });
 
 app.listen(3000, function() {
   console.log('Robot app listening on port 3000');

@@ -4,47 +4,48 @@
 <head>
   <meta charset="utf-8">
   <title>Robot Details</title>
-  <link rel="stylesheet" href="details.css" / </head>
+  <link rel="stylesheet" href="details.css">
+</head>
 
-  <body>
-    <div class="container">
-{{ #robots }}
-      <div class="results">
-        <div class="topbar">
-          <img src= {{ avatar }}>
-          <div class="details">
-            <h1><p><a href="/{{ username }}">{{ name }}</a></p></h1>
-            <div class="contact">
-              <div class="citywork">
-                <span>{{ #address.city }} {{ address.city }}, {{ /address.city }}{{ address.country }} | {{ #job }}{{ job }}, {{ company }}{{ /job }}{{ ^job }}<p class="afh">Available For Hire {{ /job }}</p></span>
-              </div>
-              <p>{{ email }} | {{ phone }}</p>
+<body>
+  <div class="container">
+    {{ #robots }}
+    <div class="results">
+      <div class="topbar">
+        <img src= {{ avatar }}>
+        <div class="details">
+          <h1><p><a href="/{{ username }}">{{ name }}</a></p></h1>
+          <div class="contact">
+            <div class="citywork">
+              <span>{{ #address.city }} {{ address.city }}, {{ /address.city }}{{ address.country }} | {{ #job }}{{ job }}, {{ company }}{{ /job }}{{ ^job }}<p class="afh">Available For Hire {{ /job }}</p></span>
             </div>
+            <p>{{ email }} | {{ phone }}</p>
           </div>
         </div>
-        <div class="history">
-          <table>
-            <tr>
-              <th>Education</th>
-              <td>
-                <p>{{ university }}</p>
-              </td>
-            </tr>
-            <tr>
-              <th>Skills</th>
-              <td>
-                <ul>
-                  <li>{{ skills.0 }}</li>
-                  <li>{{ skills.1 }}</li>
-                  <li>{{ skills.2 }}</li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </div>
       </div>
-{{ /robots }}
+      <div class="history">
+        <table>
+          <tr>
+            <th>Education</th>
+            <td>
+              <p>{{ university }}</p>
+            </td>
+          </tr>
+          <tr>
+            <th>Skills</th>
+            <td>
+              <ul>
+                <li>{{ skills.0 }}</li>
+                <li>{{ skills.1 }}</li>
+                <li>{{ skills.2 }}</li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
-  </body>
+    {{ /robots }}
+  </div>
+</body>
 
 </html>
