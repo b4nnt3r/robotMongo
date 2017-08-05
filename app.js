@@ -13,6 +13,25 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
+let findOne = function(find, render) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      console.log(err);
+    } else {
+      const collection = db.collection('robots');
+      collection
+        .findOne(find)
+        .toArray(function(err, docs) {
+          docs.forEach(function(doc) {
+            doc.username.toLowerCase() === find.id;
+          })
+          render(docs);
+          db.close();
+        });
+    }
+  });
+}
+
 let findAll = function(callback) {
   MongoClient.connect(url, function(err, db) {
 
@@ -52,25 +71,6 @@ let findEmployed = function(callback) {
   });
 }
 
-let findOne = function(find, render) {
-  MongoClient.connect(url, function(err, db) {
-    if (err) {
-      console.log(err);
-    } else {
-      const collection = db.collection('robots');
-      collection
-        .find(find)
-        .toArray(function(err, docs) {
-          docs.forEach(function(doc) {
-            doc.username.toLowerCase() === find.id;
-          })
-          render(docs);
-          db.close();
-        });
-    }
-  });
-}
-
 app.get('/', function(req, res) {
   findAll(function(result) {
     res.render('index', {
@@ -98,15 +98,15 @@ app.get('/employed', function(req, res) {
 app.get('/:id', function(req, res) {
   const id = parseInt(req.params.id);
   const robotID = {
-    robots: id
+    robot: id
   }
   const robotRender = function(docs) {
+    findOne(robotID, robotRender);
     res.render('details', {
       robots: docs,
       id: id
     });
   }
-  findOne(robotID, robotRender);
 });
 
 // app.get('/:id', function(req, res) {
