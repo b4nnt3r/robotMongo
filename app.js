@@ -13,24 +13,24 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
-let findOne = function(find, render) {
-  MongoClient.connect(url, function(err, db) {
-    if (err) {
-      console.log(err);
-    } else {
-      const collection = db.collection('robots');
-      collection
-        .findOne(find)
-        .toArray(function(err, docs) {
-          docs.forEach(function(doc) {
-            doc.username.toLowerCase() === find.id;
-          })
-          render(docs);
-          db.close();
-        });
-    }
-  });
-}
+// let findOne = function(find, render) {
+//   MongoClient.connect(url, function(err, db) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       const collection = db.collection('robots');
+//       collection
+//         .findOne(find)
+//         .toArray(function(err, docs) {
+//           docs.forEach(function(doc) {
+//             doc.username.toLowerCase() === find.id;
+//           })
+//           render(docs);
+//           db.close();
+//         });
+//     }
+//   });
+// }
 
 let findAll = function(callback) {
   MongoClient.connect(url, function(err, db) {
@@ -96,28 +96,28 @@ app.get('/employed', function(req, res) {
 });
 
 app.get('/:id', function(req, res) {
-  const id = parseInt(req.params.id);
-  const robotID = {
-    robot: id
-  }
-  const robotRender = function(docs) {
-    findOne(robotID, robotRender);
-    res.render('details', {
-      robots: docs,
-      id: id
+  findAll(function(result) {
+    let robot = result.find(function(element) {
+      return element.username.toLowerCase() === req.params.id;
     });
-  }
+    res.render("details", {
+      robots: robot
+    });
+  });
 });
 
 // app.get('/:id', function(req, res) {
-//   findAll(function(result) {
-//     let robot = result.find(function(element) {
-//       return element.username.toLowerCase() === req.params.id;
+//   const id = parseInt(req.params.id);
+//   const robotID = {
+//     robot: id
+//   }
+//   const robotRender = function(docs) {
+//     res.render('details', {
+//       robots: docs,
+//       id: id
 //     });
-//     res.render("details", {
-//       robots: robot
-//     });
-//   });
+//   }
+//     findOne(robotID, robotRender);
 // });
 
 app.listen(3000, function() {
