@@ -77,16 +77,14 @@ app.get('/:id', function(req, res) {
   MongoClient.connect(url, function(err, db) {
 
     let collection = db.collection('robots');
-    let robot = collection.findOne({
+    collection.findOne({
       username: req.params.id
     }).then(function(result) {
       console.log("Heres the result", result);
-      result;
       res.render("details", {
         robots: result
       });
     });
-    console.log("Heres the robot", robot);
   });
 });
 
