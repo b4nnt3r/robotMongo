@@ -13,28 +13,8 @@ app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
-// let findOne = function(find, render) {
-//   MongoClient.connect(url, function(err, db) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       const collection = db.collection('robots');
-//       collection
-//         .findOne(find)
-//         .toArray(function(err, docs) {
-//           docs.forEach(function(doc) {
-//             doc.username.toLowerCase() === find.id;
-//           })
-//           render(docs);
-//           db.close();
-//         });
-//     }
-//   });
-// }
-
 let findAll = function(callback) {
   MongoClient.connect(url, function(err, db) {
-
     let collection = db.collection('robots');
     collection.find().toArray(function(err, result) {
       console.log("found", result.length, "robots");
@@ -45,7 +25,6 @@ let findAll = function(callback) {
 
 let findJobless = function(callback) {
   MongoClient.connect(url, function(err, db) {
-
     let collection = db.collection('robots');
     collection.find({
       "job": null
@@ -58,7 +37,6 @@ let findJobless = function(callback) {
 
 let findEmployed = function(callback) {
   MongoClient.connect(url, function(err, db) {
-
     let collection = db.collection('robots');
     collection.find({
       "company": {
@@ -96,29 +74,21 @@ app.get('/employed', function(req, res) {
 });
 
 app.get('/:id', function(req, res) {
-  findAll(function(result) {
-    let robot = result.find(function(element) {
-      return element.username.toLowerCase() === req.params.id;
+  MongoClient.connect(url, function(err, db) {
+
+    let collection = db.collection('robots');
+    let robot = collection.findOne({
+      username: req.params.id
+    }).then(function(result) {
+      console.log("Heres the result", result);
+      result;
+      res.render("details", {
+        robots: result
+      });
     });
-    res.render("details", {
-      robots: robot
-    });
+    console.log("Heres the robot", robot);
   });
 });
-
-// app.get('/:id', function(req, res) {
-//   const id = parseInt(req.params.id);
-//   const robotID = {
-//     robot: id
-//   }
-//   const robotRender = function(docs) {
-//     res.render('details', {
-//       robots: docs,
-//       id: id
-//     });
-//   }
-//     findOne(robotID, robotRender);
-// });
 
 app.listen(3000, function() {
   console.log('Robot app listening on port 3000');
